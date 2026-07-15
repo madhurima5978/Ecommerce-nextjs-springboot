@@ -1,7 +1,0 @@
-package com.shopping.ecommerce.entity;
-
-@Entity
-@Table(name="products")
-public class Product {
-
-}

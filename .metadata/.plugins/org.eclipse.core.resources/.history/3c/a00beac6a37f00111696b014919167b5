@@ -1,5 +1,0 @@
-package com.shopping.ecommerce.dto;
-
-public class ProductResponse {
-
-}

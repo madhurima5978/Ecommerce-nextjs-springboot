@@ -1,9 +1,0 @@
-package com.shopping.ecommerce.config;
-
-@Configuration
-public class AppConfig {
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-}

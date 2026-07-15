@@ -1,9 +1,0 @@
-package com.shopping.ecommerce.service;
-
-import com.shopping.ecommerce.dto.LoginRequest;
-import com.shopping.ecommerce.dto.RegisterRequest;
-
-public interface UserService {
-	void register(RegisterRequest request);
-	LoginRequest login(LoginRequest request);
-}
