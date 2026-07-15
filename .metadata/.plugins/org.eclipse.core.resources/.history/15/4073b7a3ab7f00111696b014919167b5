@@ -1,0 +1,18 @@
+package com.shopping.ecommerce.service;
+
+import java.util.List;
+
+import com.shopping.ecommerce.dto.ProductRequest;
+import com.shopping.ecommerce.dto.ProductResponse;
+
+public interface ProductService {
+	ProductResponse create(ProductRequest request);
+	
+//	ProductResponse getById(Long id);
+	
+	List<ProductResponse> getAll();
+	
+//	ProductResponse update(Long id, ProductRequest request);
+//	
+//	void delete(Long id);
+}

@@ -1,0 +1,7 @@
+package com.shopping.ecommerce.security;
+
+@Service
+public class CustomUserDetailsService implements UserDetailsService{
+
+	
+}

@@ -1,0 +1,8 @@
+package com.shopping.ecommerce.controller;
+
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+}

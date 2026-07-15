@@ -1,0 +1,31 @@
+package com.shopping.ecommerce.controller;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@RestController
+@SecurityRequirement(name = "Bearer Authentication")
+public class TestContoller {
+
+	@GetMapping("/public")
+	public String publicApi() {
+		return "Public API";
+	}
+	
+	@GetMapping("/customer")
+	@PreAuthorize("hasRole('CUSTOMER')")
+	public String customer(Authentication authentication) {
+		return "Welcome Customer : "+authentication.getName();
+	}
+	
+	@GetMapping("/admin")
+	@PreAuthorize("hasRole('ADMIN')")
+	public String admin(Authentication authentication) {
+		return "Welcome Admin : "+authentication.getName();
+	}
+}
+

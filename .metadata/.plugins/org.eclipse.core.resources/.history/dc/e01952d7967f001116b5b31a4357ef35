@@ -1,0 +1,17 @@
+package com.shopping.ecommerce.controller;
+
+
+@RestController
+public class TestContoller {
+
+	@GetMapping("/public")
+	public String publicApi() {
+		return "Public API";
+	}
+	
+	@GetMapping("/customer")
+	@PreAuthorize("hasRole('CUSTOMER')")
+	public String customer(Authentication authentication) {
+		return ""
+	}
+}

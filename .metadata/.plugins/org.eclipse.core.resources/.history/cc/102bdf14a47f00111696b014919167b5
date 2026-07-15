@@ -1,0 +1,13 @@
+package com.shopping.ecommerce.service;
+
+public interface ProductService {
+	ProductResponse create(ProductResponse request);
+	
+	ProductResponse getById(Long id);
+	
+	List<ProductResponse> getAll();
+	
+	ProductResponse update(Long id, ProductRequest request);
+	
+	void delete(Long id);
+}

@@ -1,0 +1,5 @@
+package com.shopping.ecommerce.entity;
+
+public class Product {
+
+}

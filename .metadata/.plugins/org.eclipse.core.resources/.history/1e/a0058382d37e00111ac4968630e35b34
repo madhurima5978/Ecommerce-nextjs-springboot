@@ -1,0 +1,17 @@
+package com.shopping.ecommerce.config;
+
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+
+public class AuthenticationProvider {
+
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+
+	    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+	    provider.setUserDetailsService(customUserDetailsService);
+	    provider.setPasswordEncoder(passwordEncoder);
+
+	    return provider;
+	}
+}

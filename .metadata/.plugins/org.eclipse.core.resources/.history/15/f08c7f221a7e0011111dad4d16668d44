@@ -1,0 +1,5 @@
+package com.shopping.ecommerce.controller;
+
+public class AuthController {
+
+}

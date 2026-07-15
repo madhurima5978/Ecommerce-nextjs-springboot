@@ -1,0 +1,45 @@
+package com.shopping.ecommerce.service;
+
+import com.shopping.ecommerce.dto.ProductRequest;
+import com.shopping.ecommerce.dto.ProductResponse;
+import com.shopping.ecommerce.entity.Product;
+import com.shopping.ecommerce.repository.ProductRepository;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+	@Autowired
+	private ProductRepository productRepository;
+	
+	@Override
+	public ProductResponse create(ProductRequest request) {
+		Product product = new Product();
+		product.setName(request.getName());
+		product.setDescription(request.getDescription());
+		product.setPrice(request.getPrice());
+		product.setStock(request.getStock());
+		product.setImageUrl(request.getImageUrl());
+		Product saved = productRepository.save(product);
+		ProductResponse response = new ProductResponse();
+		response.setId(saved.getId());
+		response.setName(saved.getName());
+		response.setDescription(saved.getDescription());
+		response.setPrice(saved.getPrice());
+		response.setStock(saved.getStock());
+		response.setImageUrl(saved.getImageUrl());
+		
+		return response;
+	}
+	
+	@Override
+	public List<ProductResponse> getAll()
+	{
+		List<Product> productlist;
+		productlist = 
+	}
+}

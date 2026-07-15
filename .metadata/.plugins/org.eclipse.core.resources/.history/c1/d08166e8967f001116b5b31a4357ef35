@@ -1,0 +1,25 @@
+package com.shopping.ecommerce.controller;
+
+import org.springframework.security.core.Authentication;
+
+@RestController
+public class TestContoller {
+
+	@GetMapping("/public")
+	public String publicApi() {
+		return "Public API";
+	}
+	
+	@GetMapping("/customer")
+	@PreAuthorize("hasRole('CUSTOMER')")
+	public String customer(Authentication authentication) {
+		return "Welcome Customer : "+authentication.getName();
+	}
+	
+	@GetMapping("/admin")
+	@PreAuthorize("hasRole('ADMIN')")
+	public String admin(Authentication authentication) {
+		return "Welcome Admin : "+authentication.getName();
+	}
+}
+
