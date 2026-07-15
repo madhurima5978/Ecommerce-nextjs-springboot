@@ -28,12 +28,24 @@ public class Product {
 	
 	@Column(nullable = false)
 	private Boolean active = true;
-
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "category_id", nullable = false)
+	private Category category;
+	
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
+	
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 	
 	public LocalDateTime getCreatedAt() {
 		return createdAt;

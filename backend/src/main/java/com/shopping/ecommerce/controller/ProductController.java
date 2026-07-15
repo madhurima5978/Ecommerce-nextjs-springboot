@@ -3,6 +3,7 @@ package com.shopping.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopping.ecommerce.service.ProductService;
@@ -29,8 +31,8 @@ public class ProductController {
     private ProductService productService;
 	
 	@GetMapping("/products")
-	public List<ProductResponse> getAll() {
-		return productService.getAll();
+	public Page<ProductResponse> getAll( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id")String sort, @RequestParam(defaultValue = "desc")String direction) {
+		return productService.getAll(page, size, sort, direction);
 	}
 	
 	@PostMapping("/products")
@@ -56,5 +58,10 @@ public class ProductController {
 	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
 		productService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("products/search")
+	public Page<ProductResponse> searchProducts(@RequestParam String keyword, @RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10")int size){
+		return productService.searchProducts(keyword, page, size);
 	}
 }

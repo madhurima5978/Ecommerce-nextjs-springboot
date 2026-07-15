@@ -14,7 +14,16 @@ public class ProductRequest {
 	
 	private String imageUrl;
 	
+	private Long categoryId;
 	
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public String getName() {
 		return name;
 	}
