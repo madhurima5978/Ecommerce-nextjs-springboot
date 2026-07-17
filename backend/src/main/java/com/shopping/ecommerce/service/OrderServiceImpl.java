@@ -114,6 +114,34 @@ public class OrderServiceImpl implements OrderService{
 
 	}
 	
+	@Override
+	@Transactional
+	public List<OrderResponse> orderHistory(Authentication authentication)
+	{
+		String email = authentication.getName();
+		User user = userRepository.findByEmail(email)
+					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+		List<Order> orders = orderRepository.findByUser(user);
+		List<OrderResponse> orderResponses = new ArrayList<>();
+		for(Order order : orders)
+		{
+			OrderResponse orderResponse = mapToResponse(order);
+			orderResponses.add(orderResponse);
+		}
+		return orderResponses;
+	}
+	
+	@Override
+	@Transactional
+	public OrderResponse getOrderById(long id,Authentication authentication) {
+		String email = authentication.getName();
+		User user = userRepository.findByEmail(email)
+					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+		Order order = orderRepository.findById(id)
+						.orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND,"Order not found"));
+		return mapToResponse(order);
+	}
+	
 	private OrderResponse mapToResponse(Order order) {
 
 	    OrderResponse response = new OrderResponse();
@@ -153,4 +181,5 @@ public class OrderServiceImpl implements OrderService{
 
 	    return response;
 	}
+	
 }
