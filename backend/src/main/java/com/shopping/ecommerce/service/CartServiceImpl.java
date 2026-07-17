@@ -1,6 +1,7 @@
 package com.shopping.ecommerce.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,22 +107,103 @@ public class CartServiceImpl implements CartService {
 		return cartItemResponse;
 	}
 
-//	public List<CartItemResponse> getCart()
-//	{
-//		
-//	}
-//
-//	public CartItemResponse updateQuantity(
-//	        Long cartItemId,
-//	        Integer quantity) {
-//		
-//	}
-//
-//	public void removeItem(Long cartItemId) {
-//		
-//	}
-//
-//	public void clearCart() {
-//		
-//	}
+	@Transactional
+	public List<CartItemResponse> getCart(Authentication authentication){
+		List<CartItem> cartItems = new ArrayList<>();  
+		String email = authentication.getName();
+		User user = userRepository.findByEmail(email)
+					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+		Cart cart = cartRepository.findByUser(user).orElse(null);
+		if(cart!=null)
+		{
+			cartItems = cartItemRepository.findByCart(cart);
+		}
+		List<CartItemResponse> cartItemResponses = new ArrayList<>();
+		for(CartItem cartitem : cartItems) {
+			CartItemResponse cartItemResponse = mapToResponse(cartitem);
+			cartItemResponses.add(cartItemResponse);
+			
+		}
+		return cartItemResponses;
+	}
+	@Transactional
+	public CartItemResponse updateQuantity(
+	        Long cartItemId,
+	        Integer quantity,
+	        Authentication authentication)
+	{
+	    if (quantity <= 0) {
+
+	        throw new ResponseStatusException(
+	                HttpStatus.BAD_REQUEST,
+	                "Quantity must be greater than zero");
+	    }
+		String email = authentication.getName();
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+		
+		   CartItem cartItem = cartItemRepository.findById(cartItemId)
+		            .orElseThrow(() -> new ResponseStatusException(
+		                            HttpStatus.NOT_FOUND,
+		                            "Cart item not found"));
+		if (!cartItem.getCart()
+		            .getUser()
+		            .getId()
+		            .equals(user.getId())) {
+
+		        throw new ResponseStatusException(
+		                HttpStatus.FORBIDDEN,
+		                "You cannot modify another user's cart");
+		}
+		CartItem response = new CartItem();
+		
+			if (quantity > cartItem.getProduct().getStock()) {
+
+			    throw new ResponseStatusException(
+			            HttpStatus.CONFLICT,
+			            "Insufficient stock");
+			}
+			
+				cartItem.setQuantity(quantity);
+				response=cartItemRepository.save(cartItem);
+				
+		return mapToResponse(response);
+		
+	}
+	@Transactional
+	public void removeItem(Long cartItemId,Authentication authentication)
+	{
+		String email = authentication.getName();
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+		
+		   CartItem cartItem = cartItemRepository.findById(cartItemId)
+		            .orElseThrow(() -> new ResponseStatusException(
+		                            HttpStatus.NOT_FOUND,
+		                            "Cart item not found"));
+		   if (!cartItem.getCart()
+		            .getUser()
+		            .getId()
+		            .equals(user.getId())) {
+
+		        throw new ResponseStatusException(
+		                HttpStatus.FORBIDDEN,
+		                "You cannot modify another user's cart");
+		}
+		   cartItemRepository.delete(cartItem);
+		   
+	}
+	@Transactional
+	public void clearCart(Authentication authentication) {
+		String email = authentication.getName();
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
+		Cart cart = cartRepository.findByUser(user)
+		        .orElseThrow(() ->
+		                new ResponseStatusException(
+		                        HttpStatus.NOT_FOUND,
+		                        "Cart not found"));
+		cartItemRepository.deleteByCart(cart);
+		
+	}
 }

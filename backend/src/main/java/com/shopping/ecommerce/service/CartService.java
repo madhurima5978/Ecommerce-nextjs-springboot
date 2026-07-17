@@ -10,13 +10,14 @@ import com.shopping.ecommerce.dto.CartItemResponse;
 public interface CartService {
 	CartItemResponse addToCart(AddToCartRequest request,Authentication authentication);
 
-//	List<CartItemResponse> getCart();
-//
-//	CartItemResponse updateQuantity(
-//	        Long cartItemId,
-//	        Integer quantity);
-//
-//	void removeItem(Long cartItemId);
-//
-//	void clearCart();
+	List<CartItemResponse> getCart(Authentication authentication);
+
+	CartItemResponse updateQuantity(
+	        Long cartItemId,
+	        Integer quantity,
+	        Authentication authentication);
+
+	void removeItem(Long cartItemId,Authentication authentication);
+
+	void clearCart(Authentication authentication);
 }
